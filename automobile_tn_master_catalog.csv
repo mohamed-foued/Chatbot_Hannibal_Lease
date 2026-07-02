@@ -1,0 +1,150 @@
+Marque (Brand),Modèle (Model),Version / Finition,Énergie (Fuel Type),Puissance Fiscale,Prix (Price TND)
+Kia,Picanto,Populaire 1.0 L,Essence,4 CV,32287
+Kia,Picanto,LX 1.0 L,Essence,4 CV,43980
+Kia,Picanto,GT-Line 1.25 L BVA,Essence,5 CV,61500
+Kia,Rio Berline,LX 1.4 L,Essence,5 CV,69480
+Kia,Rio 5 Portes,SX 1.4 L,Essence,5 CV,74500
+Kia,Seltos,Tech Line 1.4 L T-GDI BVA,Essence,8 CV,109800
+Kia,Sportage,Active 1.6 L T-GDI,Essence,9 CV,143980
+Kia,EV6,Standard Range GT-Line,Electrique,5 CV,179980
+Hyundai,Grand i10,Populaire 1.0 L,Essence,4 CV,33243
+Hyundai,Grand i10 Sedan,High Grade BVA,Essence,5 CV,57500
+Hyundai,i20,GLS 1.2 L,Essence,5 CV,65500
+Hyundai,Creta,Business 1.5 L,Essence,7 CV,98900
+Hyundai,Tucson,Business 1.6 L T-GDI,Essence,9 CV,135900
+Hyundai,Santa Fe,2.2 L CRDI 4x4 BVA,Diesel,11 CV,215000
+Hyundai,Palisade,2.2 L CRDI 4x4,Diesel,11 CV,265000
+Suzuki,Celerio,Populaire 1.0 L GL,Essence,4 CV,28935
+Suzuki,S-Presso,GL 1.0 L,Essence,4 CV,34900
+Suzuki,Dzire,GL 1.2 L,Essence,5 CV,49500
+Suzuki,Swift,GLX 1.2 L BVM,Essence,5 CV,59000
+Suzuki,Ertiga,GLX 1.5 L 7 Places,Essence,6 CV,73500
+Suzuki,Jimny,GLX 1.5 L 4x4 Auto,Essence,6 CV,98000
+Toyota,Agya,Populaire 1.0 L,Essence,4 CV,29500
+Toyota,Yaris Hatchback,Active 1.5 L,Essence,5 CV,72000
+Toyota,Corolla Sedan,Active 1.6 L,Essence,7 CV,89000
+Toyota,C-HR,Dynamic BVA,Essence,7 CV,119000
+Toyota,RAV4,Hybrid 2.5 L Active,Hybride,9 CV,159000
+Toyota,bZ4X,Electric 100%,Electrique,5 CV,165000
+Toyota,Prado,TX-L 3.0 L Diesel 4x4,Diesel,12 CV,310000
+Toyota,Hilux,Double Cabine 4x4 Intercooler,Diesel,8 CV,112000
+Volkswagen,Polo,Popular 1.0 L,Essence,4 CV,34500
+Volkswagen,Virtus,Trendline 1.6 L,Essence,6 CV,67980
+Volkswagen,T-Cross,Life 1.0 TSI,Essence,6 CV,89900
+Volkswagen,Golf 8,Life 1.4 TSI BVA,Essence,8 CV,112000
+Volkswagen,T-Roc,Advance 1.4 TSI,Essence,8 CV,128900
+Volkswagen,Passat,R-Line 1.4 TSI BVA,Essence,8 CV,169000
+Volkswagen,Tiguan,Elegance 2.0 TDI 4Motion,Diesel,9 CV,175000
+Volkswagen,Caddy,Cargo 2.0 L TDI Business,Diesel,5 CV,84980
+Peugeot,208,Like 1.2 L Puretech,Essence,4 CV,54000
+Peugeot,208,Allure 1.2 L Puretech EAT8,Essence,6 CV,76500
+Peugeot,2008,Allure 1.2 L Puretech BVM,Essence,6 CV,88900
+Peugeot,308,Allure 1.2 L Puretech BVA,Essence,7 CV,104000
+Peugeot,3008,Allure 1.6 L THP BVA,Essence,9 CV,138000
+Peugeot,5008,Allure 1.6 L THP (7 Places),Essence,9 CV,149000
+Peugeot,Landtrek,4x4 Double Cabine 1.9 L,Diesel,8 CV,94800
+Peugeot,Rifter,Active BlueHDi 1.6 L,Diesel,5 CV,79500
+Citroën,C3,Populaire 1.2 L,Essence,4 CV,35000
+Citroën,C3,Feel 1.2 L,Essence,4 CV,56900
+Citroën,C4,Feel Pack 1.2 Puretech BVA,Essence,7 CV,99500
+Citroën,C5 Aircross,Live 1.6 L Turbo,Essence,9 CV,124000
+Citroën,Berlingo,Multispace 1.6 HDi,Diesel,5 CV,78000
+Renault,Kwid,Populaire 1.0 L,Essence,4 CV,28000
+Renault,Clio V,Zen 1.0 Tce,Essence,5 CV,62000
+Renault,Symbol,Confort 1.2 L,Essence,5 CV,46500
+Renault,Megane Sedan,Life 1.3 Tce BVA,Essence,7 CV,92000
+Renault,Austral,Equilibre 1.3 TCe Mild Hybrid,Hybride,7 CV,129900
+Renault,Express Van,1.5 dCi,Diesel,4 CV,59900
+Dacia,Sandero,Life 1.0 L Sce,Essence,5 CV,48500
+Dacia,Duster,Confort 1.5 dCi 4x2,Diesel,6 CV,74000
+Fiat,500,Cult 1.2 L,Essence,4 CV,52000
+Fiat,500X,Cross 1.4 L Multiair,Essence,7 CV,89000
+Fiat,Fiorino,Cargo 1.3 Multijet,Diesel,4 CV,48500
+Jeep,Renegade,Limited 1.3 T4 BVA,Essence,8 CV,115000
+Jeep,Compass,S Model 1.3 T4 AWD,Essence,8 CV,142000
+Alfa Romeo,Tonale,Edizione 1.5 Hybrid BVA,Hybride,7 CV,159000
+Alfa Romeo,Stelvio,Veloce 2.0 T Turbo 4x4,Essence,11 CV,245000
+Seat,Ibiza,Style 1.0 L,Essence,5 CV,64980
+Seat,Arona,Reference 1.0 TSI,Essence,5 CV,79980
+Seat,Arona,FR 1.0 TSI,Essence,5 CV,95980
+Seat,Ateca,Style 1.4 L BVA,Essence,8 CV,118900
+Skoda,Fabia,Ambition 1.0 L,Essence,5 CV,68980
+Skoda,Kushaq,Ambition 1.0 TSI,Essence,6 CV,78980
+Skoda,Scala,Ambition 1.6 L BVA,Essence,7 CV,82500
+Skoda,Kamiq,Ambition 1.6 L BVA,Essence,7 CV,89500
+Skoda,Karoq,Style 2.0 L TDI,Diesel,8 CV,134000
+Cupra,Leon,1.4 TSI Sport,Essence,8 CV,128980
+Cupra,Terramar,1.4 TSI VZ,Essence,9 CV,168980
+Mitsubishi,Attrage,Populaire 1.2 L,Essence,4 CV,33269
+Mitsubishi,Mirage,Populaire 1.2 L,Essence,4 CV,33900
+Mitsubishi,Eclipse Cross,GLX 1.5 L Turbo,Essence,8 CV,116000
+Mitsubishi,L200,Sportero Double Cabine 4x4,Diesel,7 CV,102500
+Honda,City,LX 1.5 L BVA,Essence,6 CV,76900
+Honda,HR-V,1.5 L CVT EX,Essence,6 CV,114980
+Honda,CR-V,Hybrid 2.0 L i-MMD,Hybride,8 CV,168000
+Nissan,Micra,Acenta 1.0 T,Essence,5 CV,64500
+Nissan,Qashqai,Tekna 1.3 T BVA,Essence,7 CV,122000
+Nissan,Navara,Double Cabine LE 4x4,Diesel,8 CV,109000
+Chery,Tiggo 1X,Populaire 1.0 L Turbo,Essence,4 CV,32340
+Chery,Tiggo 7 Pro,Luxury 1.5 L,Essence,9 CV,94500
+Chery,i03,Electric 100%,Electrique,4 CV,59000
+MG,ZS,Luxury 1.5 L,Essence,7 CV,76900
+MG,4 EV,Urban Comfort Electric,Electrique,4 CV,98900
+MG,S6,Electric Family SUV,Electrique,6 CV,135000
+Geely,GX3 Pro,2WD Comfort,Essence,6 CV,64500
+Geely,Coolray,Sport 1.5 T BVA,Essence,8 CV,88800
+Geely,Geometry C,Electric SUV,Electrique,5 CV,112000
+Haval,Jolion,Primary 1.5 T BVA,Essence,8 CV,96500
+Haval,H6,Supreme 2.0 T 4WD,Essence,11 CV,132000
+Jetour,X70 Plus,7 Places Restylé,Essence,9 CV,109900
+Jetour,Dashing,Luxury 1.5 T,Essence,9 CV,115000
+BYD,Atto 3,Electric Comfort,Electrique,5 CV,119000
+BYD,Dolphin,Electric Hatchback,Electrique,4 CV,89000
+Dongfeng,SX3,1.6 L BVM,Essence,7 CV,56900
+Dongfeng,Box,Electric EV,Electrique,4 CV,49990
+DFSK,K01S,Simple Cabine Utilitaires,Essence,4 CV,29900
+Xpeng,G6,Ultra Long Range EV,Electrique,6 CV,145000
+Voyah,Free,Premium Electric SUV,Electrique,12 CV,225000
+M-Hero,917,Luxury Off-road EV,Electrique,20 CV,399000
+Avantier,Commuter,Mini EV City,Electrique,4 CV,37800
+BMW,Série 1,116i Business Line,Essence,6 CV,129000
+BMW,Série 2 Gran Coupé,218i Business Line,Essence,8 CV,146000
+BMW,Série 3,318i Business Line,Essence,8 CV,184000
+BMW,Série 4 Gran Coupé,420i Pack M,Essence,10 CV,279900
+BMW,X1,sDrive18i Business,Essence,7 CV,154000
+BMW,X3,xDrive20i Executive,Essence,11 CV,235000
+BMW,X5,xDrive30d Luxury,Diesel,15 CV,360000
+Mercedes-Benz,Classe A,180 Progressive,Essence,7 CV,148000
+Mercedes-Benz,Classe A Berline,180 Business,Essence,7 CV,154000
+Mercedes-Benz,CLA,200 AMG Line,Essence,9 CV,204900
+Mercedes-Benz,Classe C,180 Avantgarde,Essence,9 CV,215000
+Mercedes-Benz,Classe E,200 Exclusive,Essence,11 CV,295000
+Mercedes-Benz,GLA,180 Progressive BVA,Essence,7 CV,168000
+Mercedes-Benz,GLB,200 AMG Line,Essence,9 CV,198000
+Mercedes-Benz,GLC Coupé,200 4MATIC AMG Line,Essence,11 CV,285000
+Audi,A3 Sportback,35 TFSI Premium,Essence,8 CV,139990
+Audi,A3 Berline,Business Extended,Essence,8 CV,149000
+Audi,A4 Berline,Business Plus,Essence,8 CV,164000
+Audi,A6 Berline,55 TFSI Quattro S-Line,Essence,15 CV,265000
+Audi,Q2,35 TFSI S-Tronic Design,Essence,8 CV,126500
+Audi,Q3,35 TFSI Advanced,Essence,8 CV,162000
+Audi,Q5,40 TDI Quattro,Diesel,10 CV,210000
+Audi,Q8,55 TFSI Quattro,Essence,15 CV,385000
+Porsche,718 Boxster,2.0 L PDK,Essence,11 CV,295000
+Porsche,Macan,PDK 2.0 L,Essence,15 CV,345000
+Porsche,Cayenne,V6 3.0 L E-Hybrid,Hybride,15 CV,490000
+Land Rover,Range Rover Evoque,2.0 P200 Flexfuel,Essence,11 CV,210000
+Land Rover,Defender,110 3.0 D MHEV Hard Top,Diesel,15 CV,340000
+Jaguar,E-Pace,2.0 P200 AWD,Essence,11 CV,195000
+Jaguar,XF,2.0 D R-Sport,Diesel,10 CV,218000
+Volvo,XC40,T3 Momentum,Essence,8 CV,145000
+Volvo,XC90,B5 AWD Inscription,Hybride,15 CV,315000
+Mahindra,KUV 100,K6+ Essence,Essence,5 CV,43900
+WallysCar,Iris,1.2 L Standard,Essence,7 CV,48200
+WallysCar,Wallys 216,Pick-up Utilitaires,Essence,6 CV,39900
+Ssangyong,Tivoli,Comfort 1.6 L,Essence,7 CV,79900
+Ssangyong,Rexton,BVA Diesel 4x4 Luxury,Diesel,11 CV,175000
+Isuzu,D-Max,Pick-up Single Cab 4x2,Diesel,7 CV,59900
+Isuzu,D-Max,Pick-up Crew Cab 4x4 Executive,Diesel,8 CV,104500
+Tata,Super Ace,Simple Cabine Tolé,Diesel,5 CV,39900
+Tata,Xenon X2,Turbo 2.2 L Double Cab,Diesel,8 CV,49900
