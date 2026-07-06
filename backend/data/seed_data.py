@@ -1,4 +1,4 @@
-from database import get_connection
+from backend.data.database import get_connection
 
 connection = get_connection()
 cursor = connection.cursor()

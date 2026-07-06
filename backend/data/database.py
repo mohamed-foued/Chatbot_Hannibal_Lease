@@ -23,21 +23,20 @@ def create_tables():
     """)
 
 
+    cursor.execute("""
+            CREATE TABLE IF NOT EXISTS dossiers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                numero_dossier TEXT NOT NULL UNIQUE,
+                client_id INTEGER NOT NULL,
+                statut TEXT NOT NULL DEFAULT 'en_cours',
+                remarque TEXT,
+                FOREIGN KEY (client_id) REFERENCES clients (id)
+            )
+        """)
 
-cursor.execute("""
-        CREATE TABLE IF NOT EXISTS dossiers (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            numero_dossier TEXT NOT NULL UNIQUE,
-            client_id INTEGER NOT NULL,
-            statut TEXT NOT NULL DEFAULT 'en_cours',
-            remarque TEXT,
-            FOREIGN KEY (client_id) REFERENCES clients (id)
-        )
-    """)
-
-connection.commit()
-connection.close()
-print("Tables créées (ou déjà existantes).")
+    connection.commit()
+    connection.close()
+    print("Tables créées (ou déjà existantes).")
 
 if __name__ == "__main__":
-    create_tables
+    create_tables()
