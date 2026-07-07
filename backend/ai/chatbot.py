@@ -31,10 +31,10 @@ def detecteur_intention(message):
     if any(mot in msg for mot in ["voiture", "prix", "modèle","marque", "budget", "acheter", "financer", "véhicule"]):
         return "recherche_voiture"
 
-    if any(mot in message_lower for mot in ["document", "pièce", "fournir","justificatif", "dossier de crédit"]):
+    if any(mot in msg for mot in ["document", "pièce", "fournir","justificatif", "dossier de crédit"]):
         return "documents_requis"                                   
     
-    if any(mot in message_lower for mot in ["leasing", "crédit", "financement","taux", "mensualité", "durée"]):
+    if any(mot in msg for mot in ["leasing", "crédit", "financement","taux", "mensualité", "durée"]):
         return "info_leasing"                                       
     
     return "general"   
@@ -64,7 +64,7 @@ def construire_contexte(intention,message):
         mots = message.upper().split()
         numero = None
         for mot in mots :
-            if mot.startwith("DOS-"):
+            if mot.startswith("DOS-"):
                 numero = mot
                 break
         if numero :
@@ -100,20 +100,20 @@ def repondre(message,historique=None):
 
     for msg in historique :
         messages_api.append(msg)
-        if contexte :
-            contenu_utilisateur = (                               
-            f"Contexte fourni par le système :\n{contexte}\n\n"     
-            f"Question du client : {message}"
-            ) 
-        else :
-            contenu_utilisateur = message
-            messages_api.append({"role": "user", "content": contenu_utilisateur})
-            reponse = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                messages=messages_api,
-                temperature=0.3,
-                max_tokens=1024
-                ) 
+    if contexte :
+        contenu_utilisateur = (                               
+        f"Contexte fourni par le système :\n{contexte}\n\n"     
+        f"Question du client : {message}"
+        ) 
+    else :
+        contenu_utilisateur = message
+    messages_api.append({"role": "user", "content": contenu_utilisateur})
+    reponse = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=messages_api,
+        temperature=0.3,
+        max_tokens=1024
+        ) 
         
     return reponse.choices[0].message.content
             

@@ -1,10 +1,10 @@
 import streamlit as st
-from backend.ai.chatbot
+from backend.ai.chatbot import repondre  
 
-st.set_page_confg(
-    page_title="Hannibal Lease - Assistant"
+st.set_page_config(
+    page_title="Hannibal Lease - Assistant",
     page_icon="🏦",
-    page_layout=centered
+    layout="centered"
 )
 
 st.markdown("""
