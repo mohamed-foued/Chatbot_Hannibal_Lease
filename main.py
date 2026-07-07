@@ -69,4 +69,6 @@ if prompt := st.chat_input("Posez votre question..."):
             ]                                            
             reponse_ia = repondre(prompt, historique_pour_ia) 
         st.markdown(reponse_ia)                          
-    st.session_state.messages.append({"role": "assistant", "content": reponse_ia}) 
+    st.session_state.messages.append({"role": "assistant", "content": reponse_ia})
+
+
