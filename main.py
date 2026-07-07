@@ -3,7 +3,7 @@ from backend.ai.chatbot import repondre
 
 st.set_page_config(
     page_title="Hannibal Lease - Assistant",
-    page_icon="🏦",
+    page_icon="logo.png",
     layout="centered"
 )
 
@@ -27,7 +27,14 @@ st.markdown("""
 <style>
 """,unsafe_allow_html=True)
 
-st.title("🏦 Hannibal Lease")
+col1, col2 = st.columns([1, 5])
+
+with col1:
+    st.image("logo.png", width=70) 
+
+with col2:
+    st.title("Hannibal Lease")
+
 st.markdown('<p class="subtitle">Votre assistant intelligent de leasing</p',
             unsafe_allow_html=True)
 
