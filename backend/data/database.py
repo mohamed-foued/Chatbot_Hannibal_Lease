@@ -1,7 +1,5 @@
-import sqlite3
-from backend.config import DB_PATH
 import psycopg2
-from config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
+from backend.config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
 
 def get_connection():
     return psycopg2.connect(
@@ -18,26 +16,25 @@ def create_tables():
     cursor = connection.cursor()
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS  clients (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+        CREATE TABLE IF NOT EXISTS clients (
+            id SERIAL PRIMARY KEY,
             nom TEXT NOT NULL,
             prenom TEXT NOT NULL,
             cin TEXT NOT NULL UNIQUE,
             email TEXT
-        )    
+        )
     """)
 
-
     cursor.execute("""
-            CREATE TABLE IF NOT EXISTS dossiers (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                numero_dossier TEXT NOT NULL UNIQUE,
-                client_id INTEGER NOT NULL,
-                statut TEXT NOT NULL DEFAULT 'en_cours',
-                remarque TEXT,
-                FOREIGN KEY (client_id) REFERENCES clients (id)
-            )
-        """)
+        CREATE TABLE IF NOT EXISTS dossiers (
+            id SERIAL PRIMARY KEY,
+            numero_dossier TEXT NOT NULL UNIQUE,
+            client_id INTEGER NOT NULL,
+            statut TEXT NOT NULL DEFAULT 'en_cours',
+            remarque TEXT,
+            FOREIGN KEY (client_id) REFERENCES clients (id)
+        )
+    """)
 
     connection.commit()
     connection.close()
