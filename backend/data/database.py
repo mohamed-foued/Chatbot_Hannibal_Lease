@@ -18,6 +18,8 @@ def create_tables():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS clients (
             id SERIAL PRIMARY KEY,
+            login TEXT UNIQUE NOT NULL,
+            mot_de_passe_hash TEXT NOT NULL,
             nom TEXT NOT NULL,
             prenom TEXT NOT NULL,
             cin TEXT NOT NULL UNIQUE,
