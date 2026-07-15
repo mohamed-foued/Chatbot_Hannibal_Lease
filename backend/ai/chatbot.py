@@ -1,6 +1,8 @@
+import re
+
 from groq import Groq
 from backend.config import GROQ_API_KEY
-from backend.data.sql_tools import verifier_cin,consulter_dossier
+from backend.data.sql_tools import verifier_cin,consulter_dossier,dossiers_par_cin
 from backend.documents.doc_loader import(extraire_texte_pdf,recherher_voiture,formater_resultats_voitures)
 
 
@@ -14,6 +16,8 @@ Règles :
 - Si tu ne connais pas la réponse, dis-le honnêtement.
 - Pour les prix, utilise le format "XX,XXX TND".
 - Sois chaleureux et accueillant avec les clients.
+-Logique de sécurité :toujours vérifier le login et le mot de passe avant de fournir des informations sensibles.
+- Ne divulgue jamais d'informations sensibles ou confidentielles des gens non connectés au client.
 """        
 
 
@@ -46,16 +50,19 @@ def construire_contexte(intention,message):
 
     contexte = ""
 
+    def extraire_cin(texte):
+        mots = texte.replace("-", " ").split()
+        for mot in mots:
+            mot_nettoye = re.sub(r"[^0-9]", "", mot)
+            if len(mot_nettoye) == 8 and mot_nettoye.isdigit():
+                return mot_nettoye
+        return None
+
     if intention == "verification_cin" :
-        mots = message.split()
-        cin = None 
-        for mot in mots :
-            if mot.isdigit() and len(mot)==8:
-                cin = mot
-                break
+        cin = extraire_cin(message)
         if cin :
             resultats = verifier_cin(cin)
-            contexte = f"Résultat de la vérification CIN : {resultat['message']}"
+            contexte = f"Résultat de la vérification CIN : {resultats['message']}"
         else :
             contexte = "Le client n'a pas fourni de numéro CIN valide (8 chiffres)."
 
@@ -67,13 +74,20 @@ def construire_contexte(intention,message):
             if mot.startswith("DOS-"):
                 numero = mot
                 break
+
         if numero :
             contexte = consulter_dossier(numero)
         else :
-            contexte = "Le client n'a pas fourni de numéro de dossier (format: DOS-XXXX-XXX)."
+            cin = extraire_cin(message)
+            if cin:
+                contexte = dossiers_par_cin(cin)
+            else:
+                contexte = "Le client n'a pas fourni de numéro de dossier (format: DOS-XXXX-XXX) ni de CIN valide (8 chiffres)."
 
-    elif intention == "recherche_voiture":  
-        resultats = recherher_voiture()
+    elif intention == "recherche_voiture": 
+        nombres = re.findall(r'\d+', message.replace(" ", ""))
+        budget_max = int(nombres[0]) if nombres else None
+        resultats = recherher_voiture(budget_max=budget_max) 
         contexte = "Voici les voitures disponibles\n"+formater_resultats_voitures(resultats)
 
     elif intention == "documents_requis":
