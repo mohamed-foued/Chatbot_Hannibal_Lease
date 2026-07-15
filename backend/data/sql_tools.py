@@ -32,6 +32,27 @@ def consulter_dossier(numero_dossier):
         return f"Aucun dossier trouvé avec le numéro {numero_dossier}."
     return f"Dossier {row[0]} — Statut : {row[1]} — Remarque : {row[2] or 'Aucune'}"
 
+def dossiers_par_cin(cin):
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(
+        "SELECT d.numero_dossier, d.statut, d.remarque "
+        "FROM dossiers d "
+        "JOIN clients c ON d.client_id = c.id "
+        "WHERE c.cin = %s",
+        (cin,),
+    )
+    lignes = cursor.fetchall()
+    connection.close()
+
+    if not lignes:
+        return "Aucun dossier trouvé pour ce client."
+
+    resultat = "Dossiers trouvés :\n"
+    for ligne in lignes:
+        resultat += f"- {ligne[0]} — Statut : {ligne[1]} — Remarque : {ligne[2] or 'Aucune'}\n"
+    return resultat
+
 
 if __name__ == "__main__":
     print(verifier_cin("12345678"))
