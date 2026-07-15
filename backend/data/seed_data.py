@@ -4,15 +4,18 @@ connection = get_connection()
 cursor = connection.cursor()
 
 cursor.execute(
-    "INSERT INTO clients (nom, prenom, cin, email) VALUES (?, ?, ?, ?)",
-    ("Ben Ali", "Ahmed", "12345678", "ahmed@email.com")
+    """
+    INSERT INTO clients (login, mot_de_passe_hash, nom, prenom, cin, email)
+    VALUES (%s, %s, %s, %s, %s, %s)
+    RETURNING id
+    """,
+    ("test_user", "hash_placeholder", "Ben Ali", "Ahmed", "12345678", "ahmed@email.com"),
 )
-
-client_id = cursor.lastrowid
+client_id = cursor.fetchone()[0]
 
 cursor.execute(
-    "INSERT INTO dossiers (numero_dossier, client_id, statut, remarque) VALUES (?, ?, ?, ?)",
-    ("DOS-2026-001", client_id, "en_cours", "En attente de justificatifs")
+    "INSERT INTO dossiers (numero_dossier, client_id, statut, remarque) VALUES (%s, %s, %s, %s)",
+    ("DOS-2026-001", client_id, "en_cours", "En attente de justificatifs"),
 )
 
 connection.commit()

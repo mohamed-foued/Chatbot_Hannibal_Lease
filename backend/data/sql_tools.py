@@ -8,7 +8,7 @@ def verifier_cin(cin):
 
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT nom, prenom FROM clients WHERE cin = ?", (cin,))
+    cursor.execute("SELECT nom, prenom FROM clients WHERE cin = %s", (cin,))
     row = cursor.fetchone()
     connection.close()
 
@@ -22,7 +22,7 @@ def consulter_dossier(numero_dossier):
     connection = get_connection()
     cursor = connection.cursor()
     cursor.execute(
-        "SELECT numero_dossier, statut, remarque FROM dossiers WHERE numero_dossier = ?",
+        "SELECT numero_dossier, statut, remarque FROM dossiers WHERE numero_dossier = %s",
         (numero_dossier,)
     )
     row = cursor.fetchone()
