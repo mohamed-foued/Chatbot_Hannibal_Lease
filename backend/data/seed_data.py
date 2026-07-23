@@ -1,9 +1,10 @@
-from backend.data.database import get_connection
+import bcrypt
+from backend.data.database import create_tables, get_connection
 
 clients = [
-    ("Ben Ali", "Ahmed", "12345678", "ahmed@email.com"),
-    ("Trabelsi", "Sarra", "23456789", "sarra@email.com"),
-    ("Gharbi", "Karim", "34567890", "karim@email.com"),
+    ("Ben Ali", "Ahmed", "12345678", "ahmed@email.com", "ahmed", "motdepasse123"),
+    ("Trabelsi", "Sarra", "23456789", "sarra@email.com", "sarra", "motdepasse123"),
+    ("Gharbi", "Karim", "34567890", "karim@email.com", "karim", "motdepasse123"),
 ]
 
 # (numero_dossier, index du client dans la liste ci-dessus, statut, remarque)
@@ -14,14 +15,20 @@ dossiers = [
     ("DOS-2026-004", 2, "refuse", "Revenus insuffisants"),
 ]
 
+
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+create_tables()
 connection = get_connection()
 cursor = connection.cursor()
 
 client_ids = []
-for nom, prenom, cin, email in clients:
+for nom, prenom, cin, email, login, password in clients:
     cursor.execute(
-        "INSERT INTO clients (nom, prenom, cin, email) VALUES (%s, %s, %s, %s) RETURNING id",
-        (nom, prenom, cin, email)
+        "INSERT INTO clients (login, mot_de_passe_hash, nom, prenom, cin, email) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
+        (login, hash_password(password), nom, prenom, cin, email)
     )
     client_ids.append(cursor.fetchone()[0])
 
