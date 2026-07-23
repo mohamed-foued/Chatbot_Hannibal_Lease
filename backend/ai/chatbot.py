@@ -4,21 +4,26 @@ from groq import Groq
 from backend.config import GROQ_API_KEY
 from backend.data.sql_tools import verifier_cin,consulter_dossier,dossiers_par_cin
 from backend.documents.doc_loader import(extraire_texte_pdf,recherher_voiture,formater_resultats_voitures)
+from backend.suggestions import suggerer_vehicules
 
 
 client = Groq(api_key=GROQ_API_KEY)
 
-SYSTEM_PROMPT = """Tu es l'assistant virtuel de Hannibal Lease,    
-une société de leasing en Tunisie.
-Règles :
-- Réponds toujours en français, de façon professionnelle et concise.
-- Si des informations contextuelles sont fournies, base ta réponse UNIQUEMENT sur elles.
-- Si tu ne connais pas la réponse, dis-le honnêtement.
-- Pour les prix, utilise le format "XX,XXX TND".
-- Sois chaleureux et accueillant avec les clients.
--Logique de sécurité :toujours vérifier le login et le mot de passe avant de fournir des informations sensibles.
-- Ne divulgue jamais d'informations sensibles ou confidentielles des gens non connectés au client.
-"""        
+SYSTEM_PROMPT = """Tu es l'assistant virtuel de Hannibal Lease, une société de leasing en Tunisie.
+
+Règles générales :
+- Réponds toujours en français, de façon professionnelle, chaleureuse et concise.
+- Base ta réponse UNIQUEMENT sur les informations contextuelles fournies. N'invente jamais un prix, un statut ou une mensualité qui n'est pas dans le contexte.
+- Si le contexte indique un refus d'accès, explique-le clairement sans essayer de deviner l'information à sa place.
+- Si tu ne sais pas, dis-le honnêtement plutôt que de deviner.
+- Aucune information privée (dossier, statut, coordonnées) ne doit jamais être communiquée si le contexte ne confirme pas que le client est connecté et identifié.
+
+Format :
+- Pour les prix et montants, utilise le format "XX,XXX TND".
+- Pour une liste (véhicules, dossiers, documents), utilise des tirets "- ", un élément par ligne.
+- Reste concis : quelques phrases, plus une liste si besoin.
+- Ne mentionne jamais explicitement que tu reçois des "informations contextuelles" — parle naturellement.
+"""
 
 
 def detecteur_intention(message):
@@ -84,11 +89,15 @@ def construire_contexte(intention,message):
             else:
                 contexte = "Le client n'a pas fourni de numéro de dossier (format: DOS-XXXX-XXX) ni de CIN valide (8 chiffres)."
 
-    elif intention == "recherche_voiture": 
-        nombres = re.findall(r'\d+', message.replace(" ", ""))
-        budget_max = int(nombres[0]) if nombres else None
-        resultats = recherher_voiture(budget_max=budget_max) 
-        contexte = "Voici les voitures disponibles\n"+formater_resultats_voitures(resultats)
+    elif intention == "recherche_voiture":
+        nombres = [int(n) for n in re.findall(r'\d+', message.replace(" ", ""))]
+        if len(nombres) >= 2:
+            contexte = "Suggestions personnalisées :\n" + formater_suggestions(
+                suggerer_vehicules(apport=nombres[0], salaire=nombres[1])
+            )
+        else:
+            resultats = recherher_voiture(budget_max=nombres[0] if nombres else None)
+            contexte = "Voici les voitures disponibles\n" + formater_resultats_voitures(resultats)
 
     elif intention == "documents_requis":
         contexte = extraire_texte_pdf("dossier_de_credit_-_liste_des_documents_a_fournir.pdf")
