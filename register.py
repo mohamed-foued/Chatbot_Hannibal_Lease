@@ -8,9 +8,7 @@ import streamlit as st
 from backend.data.auth_utilisateurs import inscrire_client
 
 
-# ---------------------------------------------------------------------------
 # CSS partagé (identique à main.py pour l'harmonie visuelle)
-# ---------------------------------------------------------------------------
 
 COMMON_CSS = """
 <style>
@@ -106,9 +104,7 @@ hr { border-color: rgba(255,255,255,0.12); margin: 1.5rem 0; }
 """
 
 
-# ---------------------------------------------------------------------------
 # Composant principal
-# ---------------------------------------------------------------------------
 
 def afficher_inscription():
     """
@@ -129,7 +125,7 @@ def afficher_inscription():
         unsafe_allow_html=True,
     )
 
-    # ---- Formulaire ----
+    # Formulaire 
     with st.form("form_inscription", clear_on_submit=False):
         st.markdown("#### Informations personnelles")
 
@@ -160,7 +156,7 @@ def afficher_inscription():
 
         submitted = st.form_submit_button("Créer mon compte")
 
-    # ---- Traitement ----
+    # Traitement 
     if submitted:
         # Vérifications côté client
         champs_vides = [f for f, v in {
@@ -198,7 +194,7 @@ def afficher_inscription():
             else:
                 st.error(resultat["message"])
 
-    # ---- Lien retour connexion ----
+    #  Lien retour connexion 
     st.markdown("---")
     st.markdown(
         '<div class="back-link">Vous avez déjà un compte ?</div>',

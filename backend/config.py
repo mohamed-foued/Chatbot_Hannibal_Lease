@@ -21,7 +21,7 @@ def load_env_file(path: Path) -> bool:
     for key, value in values.items():
         if value is None or value == "":
             if key == "GROQ_API_KEY":
-                print(f"⚠️ {path} contient GROQ_API_KEY mais la valeur est vide")
+                print(f" {path} contient GROQ_API_KEY mais la valeur est vide")
             continue
 
         current_value = os.environ.get(key, "")
