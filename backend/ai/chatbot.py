@@ -2,8 +2,8 @@ import re
 
 from groq import Groq
 from backend.config import GROQ_API_KEY
-from backend.data.sql_tools import verifier_cin,consulter_dossier,dossiers_par_cin
-from backend.documents.doc_loader import(extraire_texte_pdf,recherher_voiture,formater_resultats_voitures)
+from backend.data.sql_tools import verifier_cin, consulter_dossier, dossiers_par_cin, dossiers_par_login
+from backend.documents.doc_loader import (extraire_texte_pdf, recherher_voiture, formater_resultats_voitures)
 from backend.suggestions import suggerer_vehicules
 
 
@@ -35,27 +35,28 @@ def detecteur_intention(message):
 
     msg = message.lower()
 
-    if any(mot in msg for mot in ["cin", "identité", "carte"]) :
+    if any(mot in msg for mot in ["cin", "identité", "carte"]):
         return "verification_cin"
-    
-    if any(mot in msg for mot in ["dossier", "statut", "dos-"]) :
+
+    if any(mot in msg for mot in ["dossier", "statut", "dos-"]):
         return "consultation_dossier"
 
-    if any(mot in msg for mot in ["voiture", "prix", "modèle","marque", "budget", "acheter", "financer", "véhicule"]):
+    if any(mot in msg for mot in ["voiture", "prix", "modèle", "marque", "budget", "acheter", "financer", "véhicule"]):
         return "recherche_voiture"
 
-    if any(mot in msg for mot in ["document", "pièce", "fournir","justificatif", "dossier de crédit"]):
-        return "documents_requis"                                   
-    
-    if any(mot in msg for mot in ["leasing", "crédit", "financement","taux", "mensualité", "durée"]):
-        return "info_leasing"                                       
-    
-    return "general"   
+    if any(mot in msg for mot in ["document", "pièce", "fournir", "justificatif", "dossier de crédit"]):
+        return "documents_requis"
+
+    if any(mot in msg for mot in ["leasing", "crédit", "financement", "taux", "mensualité", "durée"]):
+        return "info_leasing"
+
+    return "general"
 
 
-def construire_contexte(intention,message):
-    """Construit les données de contexte en fonction 
-    de l'intention détectée."""
+def construire_contexte(intention, message, client_id=None):
+    """Construit les données de contexte en fonction de l'intention détectée.
+    client_id : renseigné automatiquement si le client est connecté (login/mdp).
+    """
 
     contexte = ""
 
@@ -67,31 +68,38 @@ def construire_contexte(intention,message):
                 return mot_nettoye
         return None
 
-    if intention == "verification_cin" :
+    if intention == "verification_cin":
         cin = extraire_cin(message)
-        if cin :
+        if cin:
             resultats = verifier_cin(cin)
             contexte = f"Résultat de la vérification CIN : {resultats['message']}"
-        else :
+        else:
             contexte = "Le client n'a pas fourni de numéro CIN valide (8 chiffres)."
 
-    
-    elif intention == "consultation_dossier" :  
+    elif intention == "consultation_dossier":
         mots = message.upper().split()
         numero = None
-        for mot in mots :
+        for mot in mots:
             if mot.startswith("DOS-"):
                 numero = mot
                 break
 
-        if numero :
+        if numero:
+            # Un numéro précis est demandé : on répond directement, connecté ou non.
             contexte = consulter_dossier(numero)
-        else :
+        elif client_id:
+            # Connecté, pas de numéro précis : on liste automatiquement SES dossiers.
+            contexte = dossiers_par_login(client_id)
+        else:
+            # Pas connecté, pas de numéro : on retombe sur la vérification par CIN dans le message.
             cin = extraire_cin(message)
             if cin:
                 contexte = dossiers_par_cin(cin)
             else:
-                contexte = "Le client n'a pas fourni de numéro de dossier (format: DOS-XXXX-XXX) ni de CIN valide (8 chiffres)."
+                contexte = (
+                    "Merci de vous connecter (menu latéral) ou de fournir votre CIN "
+                    "pour consulter votre dossier."
+                )
 
     elif intention == "recherche_voiture":
         nombres = [int(n) for n in re.findall(r'\d+', message.replace(" ", ""))]
@@ -109,30 +117,30 @@ def construire_contexte(intention,message):
     elif intention == "info_leasing":
         contexte = extraire_texte_pdf("Leasing en Tunisie _ Hannibal Lease.pdf")
 
-    return contexte  
+    return contexte
 
 
+def repondre(message, historique=None, client_id=None):
+    """Prend un message de l'utilisateur et renvoie la réponse de l'IA.
+    client_id : identifiant du client connecté (None si non connecté),
+    à transmettre depuis main.py via st.session_state.get("client_id").
+    """
 
-def repondre(message,historique=None):
-    """Prend un message de l'utilisateur et renvoie la 
-    réponse de l'IA."""
-
-    if historique is None :
+    if historique is None:
         historique = []
 
     intention = detecteur_intention(message)
-    contexte = construire_contexte(intention,message)
-    messages_api = [{"role": "system", "content": SYSTEM_PROMPT}] 
+    contexte = construire_contexte(intention, message, client_id)
+    messages_api = [{"role": "system", "content": SYSTEM_PROMPT}]
 
-
-    for msg in historique :
+    for msg in historique:
         messages_api.append(msg)
-    if contexte :
-        contenu_utilisateur = (                               
-        f"Contexte fourni par le système :\n{contexte}\n\n"     
-        f"Question du client : {message}"
-        ) 
-    else :
+    if contexte:
+        contenu_utilisateur = (
+            f"Contexte fourni par le système :\n{contexte}\n\n"
+            f"Question du client : {message}"
+        )
+    else:
         contenu_utilisateur = message
     messages_api.append({"role": "user", "content": contenu_utilisateur})
     reponse = client.chat.completions.create(
@@ -140,7 +148,6 @@ def repondre(message,historique=None):
         messages=messages_api,
         temperature=0.3,
         max_tokens=1024
-        ) 
-        
+    )
+
     return reponse.choices[0].message.content
-            

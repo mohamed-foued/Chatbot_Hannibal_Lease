@@ -2,7 +2,6 @@ import time
 import psycopg2
 from backend.config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
 
-
 def get_connection(retries: int = 3, delay: int = 5):
     """
     Etablit une connexion PostgreSQL avec timeout et retry automatique.
@@ -31,6 +30,7 @@ def get_connection(retries: int = 3, delay: int = 5):
         f"Verifiez que le projet Supabase est actif sur https://app.supabase.com\n"
         f"Derniere erreur : {last_error}"
     )
+
 
 
 def create_tables():

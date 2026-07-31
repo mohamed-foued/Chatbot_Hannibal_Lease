@@ -12,17 +12,15 @@ st.set_page_config(
     layout="centered",
 )
 
-# ---------------------------------------------------------------------------
+
 # Initialisation de la session
-# ---------------------------------------------------------------------------
 if "page" not in st.session_state:
     st.session_state["page"] = "chatbot"      # on arrive direct sur le chat
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
-# ---------------------------------------------------------------------------
 # Routeur : login / register sont des overlays optionnels
-# ---------------------------------------------------------------------------
+
 page = st.session_state["page"]
 
 if page == "login":
@@ -35,9 +33,8 @@ if page == "register":
     afficher_inscription()
     st.stop()
 
-# ---------------------------------------------------------------------------
 # CSS global
-# ---------------------------------------------------------------------------
+
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -109,9 +106,8 @@ section[data-testid="stSidebar"] label {
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------------------------------------------------------------------
 # Sidebar : connexion / compte
-# ---------------------------------------------------------------------------
+
 with st.sidebar:
     st.image("logo.png", width=80)
     st.markdown("## Hannibal Lease")
@@ -160,9 +156,8 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
-# ---------------------------------------------------------------------------
 # En-tête principal
-# ---------------------------------------------------------------------------
+
 col1, col2 = st.columns([1, 5])
 with col1:
     st.image("logo.png", width=70)
@@ -181,9 +176,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ---------------------------------------------------------------------------
 # Message d'accueil (une seule fois)
-# ---------------------------------------------------------------------------
+
 if not st.session_state["messages"]:
     prenom_accueil = st.session_state.get("client_prenom", "")
     salutation = f"Bonjour {prenom_accueil} !" if prenom_accueil else "Bonjour !"
@@ -202,18 +196,16 @@ if not st.session_state["messages"]:
         ),
     })
 
-# ---------------------------------------------------------------------------
 # Affichage de l'historique
-# ---------------------------------------------------------------------------
 from backend.ai.chatbot import repondre
 
 for msg in st.session_state["messages"]:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-# ---------------------------------------------------------------------------
+
 # Saisie utilisateur
-# ---------------------------------------------------------------------------
+
 if prompt := st.chat_input("Posez votre question..."):
     st.session_state["messages"].append({"role": "user", "content": prompt})
     with st.chat_message("user"):
@@ -242,7 +234,7 @@ if prompt := st.chat_input("Posez votre question..."):
                     {"role": m["role"], "content": m["content"]}
                     for m in st.session_state["messages"][1:-1]
                 ]
-                reponse_ia = repondre(prompt, historique_pour_ia)
+                reponse_ia = repondre(prompt, historique_pour_ia, st.session_state.get("client_id"))
             st.markdown(reponse_ia)
 
     st.session_state["messages"].append({"role": "assistant", "content": reponse_ia})
