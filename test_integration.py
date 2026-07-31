@@ -1,11 +1,12 @@
 from groq import Groq
 from backend.config import GROQ_API_KEY
-from backend.data.sql_tools import consulter_dossier
+from backend.data.sql_tools import dossiers_par_login
 
 client = Groq(api_key=GROQ_API_KEY)
 
-numero = "DOS-2026-001"
-info_dossier = consulter_dossier(numero)
+# Le client connecté est identifié par son login (clé primaire de la table clients)
+login = "ahmed"
+info_dossier = dossiers_par_login(login)
 
 question = "Quel est le statut de mon dossier et que dois-je faire maintenant ?"
 

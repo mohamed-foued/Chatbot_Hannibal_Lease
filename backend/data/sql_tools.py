@@ -1,26 +1,6 @@
 from backend.data.database import get_connection
 
 
-def migrer_client_login():
-    """Migration ponctuelle : ajoute la colonne client_login à dossiers
-    et la remplit à partir de client_id. Sans danger à relancer plusieurs fois."""
-    connection = get_connection()
-    cursor = connection.cursor()
-
-    cursor.execute("ALTER TABLE dossiers ADD COLUMN IF NOT EXISTS client_login TEXT")
-
-    cursor.execute(
-        "UPDATE dossiers d "
-        "SET client_login = c.login "
-        "FROM clients c "
-        "WHERE d.client_id = c.id"
-    )
-
-    connection.commit()
-    connection.close()
-    print("Colonne client_login ajoutée et remplie avec succès.")
-
-
 def verifier_cin(cin):
     cin = cin.strip()
     if len(cin) != 8 or not cin.isdigit():
@@ -53,49 +33,6 @@ def consulter_dossier(numero_dossier):
     return f"Dossier {row[0]} — Statut : {row[1]} — Remarque : {row[2] or 'Aucune'}"
 
 
-def dossiers_par_login(login):
-    """Récupère tous les dossiers d'un client connecté (identifié par login)."""
-    connection = get_connection()
-    cursor = connection.cursor()
-    cursor.execute(
-        "SELECT d.numero_dossier, d.statut, d.remarque "
-        "FROM dossiers d "
-        "JOIN clients c ON d.client_login = c.login "
-        "WHERE c.login = %s",
-        (login.strip(),),
-    )
-    lignes = cursor.fetchall()
-    connection.close()
-
-    if not lignes:
-        return "Aucun dossier trouvé pour ce client."
-
-    resultat = "Dossiers du client connecté :\n"
-    for ligne in lignes:
-        resultat += f"- {ligne[0]} — Statut : {ligne[1]} — Remarque : {ligne[2] or 'Aucune'}\n"
-    return resultat
-def dossiers_par_client_id(id):
-    """Récupère tous les dossiers d'un client connecté (identifié par id)."""
-    connection = get_connection()
-    cursor = connection.cursor()
-    cursor.execute(
-        "SELECT d.numero_dossier, d.statut, d.remarque "
-        "FROM dossiers d "
-        "JOIN clients c ON d.client_id = c.id "
-        "WHERE c.id = %s",
-        (id,),
-    )
-    lignes = cursor.fetchall()
-    connection.close()
-
-    if not lignes:
-        return "Aucun dossier trouvé pour ce client."
-
-    resultat = "Dossiers du client connecté :\n"
-    for ligne in lignes:
-        resultat += f"- {ligne[0]} — Statut : {ligne[1]} — Remarque : {ligne[2] or 'Aucune'}\n"
-    return resultat
-
 def dossiers_par_cin(cin):
     connection = get_connection()
     cursor = connection.cursor()
@@ -118,7 +55,27 @@ def dossiers_par_cin(cin):
     return resultat
 
 
+def dossiers_par_login(login):
+    """Récupère tous les dossiers d'un client connecté (identifié par login)."""
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(
+        "SELECT d.numero_dossier, d.statut, d.remarque "
+        "FROM dossiers d "
+        "JOIN clients c ON d.client_login = c.login "
+        "WHERE c.login = %s",
+        (login.strip(),),
+    )
+    lignes = cursor.fetchall()
+    connection.close()
 
+    if not lignes:
+        return "Aucun dossier trouvé pour ce client."
+
+    resultat = "Dossiers du client connecté :\n"
+    for ligne in lignes:
+        resultat += f"- {ligne[0]} — Statut : {ligne[1]} — Remarque : {ligne[2] or 'Aucune'}\n"
+    return resultat
 
 
 def dossier_appartient_a(login, numero_dossier):
@@ -145,8 +102,10 @@ def infos_client_par_login(login):
     )
     row = cursor.fetchone()
     connection.close()
+
     if row is None:
         return None
+
     return {
         "login": row[0],
         "nom": row[1],

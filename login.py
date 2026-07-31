@@ -110,7 +110,7 @@ def afficher_login():
                 resultat = verifier_login(login.strip(), mdp)
 
             if resultat["succes"]:
-                st.session_state["client_id"] = resultat["client_id"]
+                st.session_state["client_login"] = resultat["login"]
                 st.session_state["client_nom"] = resultat["nom"]
                 st.session_state["client_prenom"] = resultat["prenom"]
                 st.session_state["page"] = "chatbot"

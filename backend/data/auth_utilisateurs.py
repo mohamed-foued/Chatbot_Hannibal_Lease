@@ -31,11 +31,11 @@ def inscrire_client(login: str, mot_de_passe: str,
                     nom: str, prenom: str,
                     cin: str, email: str = "") -> dict:
     """
-    Crée un nouveau client dans la table `clients` puis ouvre
-    automatiquement un premier dossier dans la table `dossiers`.
+    Crée un nouveau client dans la table `clients` (login = clé primaire)
+    puis ouvre automatiquement un premier dossier dans la table `dossiers`.
 
     Retourne :
-        {"succes": True,  "client_id": int, "numero_dossier": str, "message": str}
+        {"succes": True,  "login": str, "numero_dossier": str, "message": str}
         {"succes": False, "message": str}   en cas d'erreur
     """
     # --- validation basique ---
@@ -50,27 +50,25 @@ def inscrire_client(login: str, mot_de_passe: str,
         connection = get_connection()
         cursor = connection.cursor()
 
-        # Insérer le client
+        # Insérer le client (login est la clé primaire)
         cursor.execute(
             """
             INSERT INTO clients (login, mot_de_passe_hash, nom, prenom, cin, email)
             VALUES (%s, %s, %s, %s, %s, %s)
-            RETURNING id
             """,
             (login.strip(), _hash(mot_de_passe),
              nom.strip(), prenom.strip(),
              cin.strip(), email.strip()),
         )
-        client_id = cursor.fetchone()[0]
 
         # Créer le premier dossier automatiquement
         numero_dossier = _generer_numero_dossier(cursor)
         cursor.execute(
             """
-            INSERT INTO dossiers (numero_dossier, client_id, statut, remarque)
+            INSERT INTO dossiers (numero_dossier, client_login, statut, remarque)
             VALUES (%s, %s, %s, %s)
             """,
-            (numero_dossier, client_id,
+            (numero_dossier, login.strip(),
              "en_attente_documents",
              "Nouveau client – dossier en attente de documents."),
         )
@@ -79,7 +77,7 @@ def inscrire_client(login: str, mot_de_passe: str,
         connection.close()
         return {
             "succes": True,
-            "client_id": client_id,
+            "login": login.strip(),
             "numero_dossier": numero_dossier,
             "message": (
                 f"Compte créé avec succès ! "
@@ -89,7 +87,7 @@ def inscrire_client(login: str, mot_de_passe: str,
 
     except Exception as e:
         err = str(e)
-        if "clients_login_key" in err or "unique" in err.lower():
+        if "unique" in err.lower():
             if "login" in err:
                 return {"succes": False, "message": f"Le login '{login}' est déjà utilisé."}
             if "cin" in err:
@@ -103,17 +101,17 @@ def inscrire_client(login: str, mot_de_passe: str,
 
 def verifier_login(login: str, mot_de_passe: str) -> dict:
     """
-    Vérifie les identifiants d'un client.
+    Vérifie les identifiants d'un client (login unique + mot de passe).
 
     Retourne :
-        {"succes": True,  "client_id": int, "nom": str, "prenom": str}
+        {"succes": True,  "login": str, "nom": str, "prenom": str}
         {"succes": False, "message": str}
     """
     connection = get_connection()
     cursor = connection.cursor()
     cursor.execute(
-        "SELECT id, mot_de_passe_hash, nom, prenom FROM clients WHERE login = %s",
-        (login,)
+        "SELECT mot_de_passe_hash, nom, prenom FROM clients WHERE login = %s",
+        (login.strip(),)
     )
     ligne = cursor.fetchone()
     connection.close()
@@ -121,9 +119,9 @@ def verifier_login(login: str, mot_de_passe: str) -> dict:
     if ligne is None:
         return {"succes": False, "message": "Identifiant introuvable."}
 
-    client_id, hash_stocke, nom, prenom = ligne
+    hash_stocke, nom, prenom = ligne
     if bcrypt.checkpw(mot_de_passe.encode("utf-8"), hash_stocke.encode("utf-8")):
-        return {"succes": True, "client_id": client_id,
+        return {"succes": True, "login": login.strip(),
                 "nom": nom, "prenom": prenom,
                 "message": "Connexion réussie."}
     return {"succes": False, "message": "Mot de passe incorrect."}

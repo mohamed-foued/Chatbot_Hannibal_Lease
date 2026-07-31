@@ -39,9 +39,8 @@ def create_tables():
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS clients (
-            id SERIAL PRIMARY KEY,
-            login TEXT UNIQUE NOT NULL,
-            mot_de_passe_hash TEXT NOT NULL,
+            login TEXT PRIMARY KEY,
+            mot_de_passe_hash TEXT NOT NULL UNIQUE,
             nom TEXT NOT NULL,
             prenom TEXT NOT NULL,
             cin TEXT NOT NULL UNIQUE,
@@ -53,10 +52,10 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS dossiers (
             id SERIAL PRIMARY KEY,
             numero_dossier TEXT NOT NULL UNIQUE,
-            client_id INTEGER NOT NULL,
+            client_login TEXT NOT NULL,
             statut TEXT NOT NULL DEFAULT 'en_cours',
             remarque TEXT,
-            FOREIGN KEY (client_id) REFERENCES clients (id)
+            FOREIGN KEY (client_login) REFERENCES clients (login)
         )
     """)
 

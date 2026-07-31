@@ -113,14 +113,15 @@ with st.sidebar:
     st.markdown("## Hannibal Lease")
     st.markdown("---")
 
-    if "client_id" in st.session_state:
+    if "client_login" in st.session_state:
         # --- Utilisateur connecté ---
         prenom = st.session_state.get("client_prenom", "")
         nom    = st.session_state.get("client_nom", "")
         st.markdown(f"**Connecte :** {prenom} {nom}")
+        st.markdown(f"*Login : `{st.session_state['client_login']}`*")
         st.markdown(" ")
         if st.button("Se deconnecter"):
-            for k in ["client_id", "client_nom", "client_prenom", "messages"]:
+            for k in ["client_login", "client_nom", "client_prenom", "messages"]:
                 st.session_state.pop(k, None)
             st.session_state["page"] = "chatbot"
             st.rerun()
@@ -164,10 +165,11 @@ with col1:
 with col2:
     st.title("Hannibal Lease")
 
-if "client_id" in st.session_state:
+if "client_login" in st.session_state:
     prenom = st.session_state.get("client_prenom", "")
     st.markdown(
-        f'<span class="user-badge">Connecte : {prenom} {st.session_state.get("client_nom","")}</span>',
+        f'<span class="user-badge">Connecte : {prenom} {st.session_state.get("client_nom","")} '
+        f'({st.session_state["client_login"]})</span>',
         unsafe_allow_html=True,
     )
 
@@ -218,7 +220,7 @@ if prompt := st.chat_input("Posez votre question..."):
     demande_leasing = any(m in prompt.lower() for m in mots_leasing)
 
     with st.chat_message("assistant"):
-        if demande_leasing and "client_id" not in st.session_state:
+        if demande_leasing and "client_login" not in st.session_state:
             reponse_ia = (
                 "Pour initier une demande de leasing ou consulter votre dossier, "
                 "vous devez d'abord créer un compte ou vous connecter.\n\n"
@@ -234,7 +236,8 @@ if prompt := st.chat_input("Posez votre question..."):
                     {"role": m["role"], "content": m["content"]}
                     for m in st.session_state["messages"][1:-1]
                 ]
-                reponse_ia = repondre(prompt, historique_pour_ia, st.session_state.get("client_id"))
+                client_login = st.session_state.get("client_login")
+                reponse_ia = repondre(prompt, historique_pour_ia, client_login)
             st.markdown(reponse_ia)
 
     st.session_state["messages"].append({"role": "assistant", "content": reponse_ia})
